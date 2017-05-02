@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Login } from '../login/login';
-import { Register } from '../register/register';
+import { About } from '../about/about';
 /**
  * Generated class for the Landing page.
  *
@@ -32,9 +32,9 @@ userLogin() {
     });
   }
   
-  userRegister() {
+  goAbout() {
     // console.log("this will go to Register");
-    this.navCtrl.push(Register, {
+    this.navCtrl.push(About, {
       showHome: true
     });
   }
