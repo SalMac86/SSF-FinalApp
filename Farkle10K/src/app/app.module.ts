@@ -1,26 +1,42 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, HttpModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { About } from '../about/about';
+import { Game } from '../game/game';
+import { Gamelobby } from '../gamelobby/gamelobby';
+import { Landaboutrules } from '../landaboutrules/landaboutrules';
+import { Landing } from '../pages/landing/landing';
+import { Leaderboard } from '../leaderboard/leaderboard';
+import { Login } from '../login/login';
+import { Register } from '../register/register';
+import { Rules } from '../rules/rules';
+
+let injections = [
+  MyApp,
+  About,
+  Game,
+  Gamelobby,
+  Landaboutrules,
+  Landing,
+  Leaderboard,
+  Login,
+  Register,
+  Rules
+  ];
 
 @NgModule({
-  declarations: [
-    MyApp,
-    HomePage
-  ],
+  declarations: injections,
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    HttpModule
   ],
   bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    HomePage
-  ],
+  entryComponents: injections,
   providers: [
     StatusBar,
     SplashScreen,
