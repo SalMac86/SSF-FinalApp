@@ -5,6 +5,8 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
+import { AppUsers } from '../providers/app-users';
+
 import { MyApp } from './app.component';
 import { About } from '../pages/about/about';
 import { Game } from '../pages/game/game';
@@ -39,6 +41,7 @@ let injections = [
   bootstrap: [IonicApp],
   entryComponents: injections,
   providers: [
+    AppUsers,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
