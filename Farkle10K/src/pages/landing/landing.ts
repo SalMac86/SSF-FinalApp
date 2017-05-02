@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Login } from '../login/login';
-import { About } from '../about/about';
+import { Landaboutrules } from '../landaboutrules/landaboutrules';
 /**
  * Generated class for the Landing page.
  *
@@ -33,8 +33,8 @@ userLogin() {
   }
   
   goAbout() {
-    // console.log("this will go to Register");
-    this.navCtrl.push(About, {
+    // console.log("this will go to the About/Rules Landing Page");
+    this.navCtrl.push(Landaboutrules, {
       showHome: true
     });
   }

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { About } from '../about/about';
+import { Rules } from '../rules/rules';
+
 /**
  * Generated class for the Landaboutrules page.
  *
@@ -19,6 +22,18 @@ export class Landaboutrules {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Landaboutrules');
+  }
+  
+  goAbout(){
+    this.navCtrl.push(About,{
+      showHome: true
+    })
+  }
+  
+  goRules(){
+    this.navCtrl.push(Rules,{
+      showHome: true
+    })
   }
 
 }
