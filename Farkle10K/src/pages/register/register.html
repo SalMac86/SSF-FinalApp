@@ -7,12 +7,28 @@
 <ion-header padding >
 
   <ion-navbar padding color="primary" text-center>
-    <ion-title>register</ion-title>
+    <ion-title>Registration</ion-title>
+    <img src="../../assets/Farkle.jpg" />
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding fab-center>
+  <form #registerForm="ngForm" (ngSubmit)="signupForm(registerForm)" novalidate>
+    <ion-item>
+     <ion-label>Username</ion-label>
+     <ion-input name="username" type="text" placeholder="FarkleJohnny" [(ngModel)]="user.username" required></ion-input>
+    </ion-item><ion-item>
+     <ion-label>Email</ion-label>
+     <ion-input name="email" type="email" placeholder="john@doe.com" [(ngModel)]="user.email" required></ion-input>
+    </ion-item><ion-item>
+     <ion-label>Password</ion-label>
+     <ion-input name="password" type="password" placeholder="GreatP@$$w0rd" [(ngModel)]="user.password" required></ion-input>
+    </ion-item>
+   <button ion-button type="submit" class="button-block">
+     Register
+   </button>
+ </form>
 
 </ion-content>

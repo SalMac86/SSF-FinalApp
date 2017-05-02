@@ -18,10 +18,18 @@ export class AppUsers {
   baseUrl: string = ""
   path: string = ""
   
+  register(newUserData) {
+    return this.http.post(
+      this.baseUrl + this.path,
+      newUserData
+      )
+  }
    login(userData) {
     return this.http.post(
       this.baseUrl + this.path + "/login",
       userData
       )
   }
+  
+  
 }
