@@ -1,0 +1,26 @@
+{
+  "name": "Ruleset",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "diceCombos": {
+      "type": "object",
+      "required": true
+    },
+    "maxScore": {
+      "type": "number",
+      "required": true
+    },
+    "customRules": {
+      "type": "object",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

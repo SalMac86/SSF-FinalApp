@@ -34,5 +34,21 @@
   "Role": {
     "dataSource": "db",
     "public": false
+  },
+  "Users": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "Games": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "Highscores": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "Ruleset": {
+    "dataSource": "mongo",
+    "public": true
   }
 }

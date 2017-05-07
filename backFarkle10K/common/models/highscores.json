@@ -1,0 +1,30 @@
+{
+  "name": "Highscores",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "highScore": {
+      "type": "number",
+      "required": true
+    },
+    "highRoll": {
+      "type": "number",
+      "required": true
+    },
+    "highStreak": {
+      "type": "number",
+      "required": true
+    },
+    "scoreDate": {
+      "type": "date",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

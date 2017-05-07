@@ -1,0 +1,30 @@
+{
+  "name": "Games",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "userId": {
+      "type": "string",
+      "required": true
+    },
+    "userScore": {
+      "type": "number",
+      "required": true
+    },
+    "cpuScore": {
+      "type": "number",
+      "required": true
+    },
+    "playerTurn": {
+      "type": "boolean",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
