@@ -35,10 +35,6 @@
     "dataSource": "db",
     "public": false
   },
-  "Users": {
-    "dataSource": "mongo",
-    "public": true
-  },
   "Games": {
     "dataSource": "mongo",
     "public": true
@@ -48,6 +44,10 @@
     "public": true
   },
   "Ruleset": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "farkleUsers": {
     "dataSource": "mongo",
     "public": true
   }

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { Rules } from '../rules/rules';
+import { Game } from '../game/game';
 /**
  * Generated class for the Gamelobby page.
  *
@@ -19,6 +21,17 @@ export class Gamelobby {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Gamelobby');
+  }
+  
+  playGame() {
+    this.navCtrl.push(Game,{
+      showHome: true
+    })
+  }
+  goRules() {
+    this.navCtrl.push(Rules,{
+      showHome: true
+    })
   }
 
 }

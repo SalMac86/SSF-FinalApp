@@ -8,8 +8,13 @@
 
   <ion-navbar padding color="primary" text-center>
     <ion-title>Rules</ion-title>
+    <ion-buttons start side="primary">
+      <button ion-button icon-only (click)="toGamelobby()" *ngIf="showHome">
+        <ion-icon name="play"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-buttons end side="primary">
-      <button ion-button icon-only (click)="toLobby()" *ngIf="showHome">
+      <button ion-button icon-only (click)="toLanding()" *ngIf="showHome">
         <ion-icon name="home"></ion-icon>
       </button>
     </ion-buttons>

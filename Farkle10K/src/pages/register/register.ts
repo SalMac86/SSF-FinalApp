@@ -39,7 +39,8 @@ export class Register {
         window.localStorage.setItem('token', res.token);
         window.localStorage.setItem('userId', res.id);
         this.navCtrl.setRoot(Rules, {
-          showHome: true
+          showHome: true,
+          fromRegister: true
         });
         //handle successful responses
         // console.log("hope this worked");

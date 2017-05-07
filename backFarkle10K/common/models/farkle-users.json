@@ -1,25 +1,13 @@
 {
-  "name": "Games",
-  "base": "PersistedModel",
+  "name": "farkleUsers",
+  "base": "User",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "userId": {
+    "username": {
       "type": "string",
-      "required": true
-    },
-    "userScore": {
-      "type": "number",
-      "required": true
-    },
-    "cpuScore": {
-      "type": "number",
-      "required": true
-    },
-    "playerTurn": {
-      "type": "boolean",
       "required": true
     }
   },

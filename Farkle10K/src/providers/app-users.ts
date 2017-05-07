@@ -16,7 +16,7 @@ export class AppUsers {
   }
 
   baseUrl: string = "http://sp-17-salvatore-jbrownssf.c9users.io:8080/api/"
-  path: string = "Users"
+  path: string = "farkleUsers"
   
   register(newUserData) {
     return this.http.post(

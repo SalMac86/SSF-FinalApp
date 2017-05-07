@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { Game } from '../game/game';
+import { Gamelobby } from '../gamelobby/gamelobby';
 import { Register } from '../register/register';
+import { Landing } from '../landing/landing';
 
 /**
  * Generated class for the Rules page.
@@ -16,20 +17,28 @@ import { Register } from '../register/register';
   templateUrl: 'rules.html',
 })
 export class Rules {
-  userId: any = window.localStorage.getItem("userId");
+  userId: string;
   showHome: boolean = false;
+  fromRegister: boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Rules');
     this.showHome = this.navParams.get("showHome");
+    this.fromRegister = this.navParams.get("fromRegister");
   }
-  
-  toLobby() {
-    if(this.userId){ //super sketchy check to see if user is logged on
-      this.navCtrl.push(Game);
+  toLanding() {
+    this.navCtrl.setRoot(Landing);
+  }
+  toGamelobby() {
+    if(this.fromRegister){
+    this.navCtrl.push(Gamelobby);
+    }else{
+    this.toRegister();
     }
+  }
+  toRegister() {
     this.navCtrl.setRoot(Register);
   }
 
