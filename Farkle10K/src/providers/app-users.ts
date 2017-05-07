@@ -15,8 +15,8 @@ export class AppUsers {
     console.log('Hello AppUsers Provider');
   }
 
-  baseUrl: string = ""
-  path: string = ""
+  baseUrl: string = "http://sp-17-salvatore-jbrownssf.c9users.io:8080/api/"
+  path: string = "Users"
   
   register(newUserData) {
     return this.http.post(

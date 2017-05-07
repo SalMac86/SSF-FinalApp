@@ -37,7 +37,9 @@ export class Login {
         .subscribe(res => {
           window.localStorage.setItem('token', res.id);
           window.localStorage.setItem('userId', res.userId);
-          this.navCtrl.setRoot(Gamelobby);
+          this.navCtrl.setRoot(Gamelobby, {
+            showHome: true
+          });
           //handle successful responses
           // console.log("hope this worked");
         }, 

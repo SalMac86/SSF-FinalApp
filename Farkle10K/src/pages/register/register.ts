@@ -38,7 +38,9 @@ export class Register {
       .subscribe(res => {
         window.localStorage.setItem('token', res.token);
         window.localStorage.setItem('userId', res.id);
-        this.navCtrl.setRoot(Rules);
+        this.navCtrl.setRoot(Rules, {
+          showHome: true
+        });
         //handle successful responses
         // console.log("hope this worked");
       }, 
