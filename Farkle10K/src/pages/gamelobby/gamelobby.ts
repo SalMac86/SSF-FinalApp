@@ -30,7 +30,8 @@ export class Gamelobby {
   }
   goRules() {
     this.navCtrl.push(Rules,{
-      showHome: true
+      showHome: true,
+      fromRegister: true
     })
   }
 

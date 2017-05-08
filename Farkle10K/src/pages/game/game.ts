@@ -15,19 +15,24 @@ import { Gamelobby } from '../gamelobby/gamelobby';
 })
 export class Game {
   showHome: boolean = false;
-
+  die1: object = {};
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Game');
       this.showHome = this.navParams.get("showHome");
+      this.die1 = {"selected": false};
   }
  
   toGamelobby() {
     this.navCtrl.setRoot(Gamelobby, {
       showHome: false
     });
+  }
+  
+  selectDie1(){
+    this.die1['selected'] = !this.die1['selected'];
   }
   
   // rollDice(diceTray){
