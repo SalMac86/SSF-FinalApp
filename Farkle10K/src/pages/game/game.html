@@ -45,4 +45,33 @@
     </ion-row>
   </ion-grid>
 </ion-card>
+<ion-card>
+  <ion-buttons>
+    <ion-grid>
+      <ion-row space>
+    <button ion-col start>Roll</button>
+    <ion-col></ion-col>
+    <button ion-col end>Bank</button>
+    </ion-row>
+    </ion-grid>
+  </ion-buttons>
+</ion-card>
+<ion-card>
+  <ion-card-header>Score
+  <br />
+  <p style="text-align: center">{{ this.highScores['player'] }} : {{ this.highScores['CPU'] }}</p>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-grid>
+      <ion-row class="scoreHeader">
+        <ion-col>Player</ion-col>
+        <ion-col>CPU</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let score of scores">
+        <ion-col>{{score['player']}}</ion-col>
+        <ion-col>{{score['CPU']}}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>
 </ion-content>

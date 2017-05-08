@@ -15,6 +15,7 @@
 
 
 <ion-content padding fab-center>
+<ion-card>
 <form #loginForm="ngForm" (ngSubmit)="logForm(loginForm)" novalidate>
         <ion-item>
             <ion-label>Username</ion-label>
@@ -29,6 +30,7 @@
         Login
         </button>
     </form>
+</ion-card>
         <p> New Here? Register!</p>
         <button ion-button class="button-block" (click)="registerUser()">
           Register

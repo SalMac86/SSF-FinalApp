@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Gamelobby } from '../gamelobby/gamelobby';
-import { Register } from '../register/register';
+import { Login } from '../login/login';
 import { Landing } from '../landing/landing';
 
 /**
@@ -39,7 +39,7 @@ export class Rules {
     }
   }
   toRegister() {
-    this.navCtrl.setRoot(Register);
+    this.navCtrl.setRoot(Login);
   }
 
 }

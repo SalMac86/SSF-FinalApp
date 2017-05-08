@@ -1,15 +1,18 @@
 page-game {
 
-}
+    .dicedisplay {
+        border: 4px solid black;
+        justify-content: center;
+        text-align: center;
+        text-justify: center;
+    }
+    
+    .selected {
+        border: 4px solid red;
+        background: blue;
+    }
 
-.dicedisplay {
-    border: 4px solid black;
-    justify-content: center;
-    text-align: center;
-    text-justify: center;
-}
-
-.selected {
-    border: 5px solid red;
-    background: blue;
+    .scoreHeader {
+        font-weight: bolder;
+    }
 }

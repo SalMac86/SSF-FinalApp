@@ -16,13 +16,64 @@ import { Gamelobby } from '../gamelobby/gamelobby';
 export class Game {
   showHome: boolean = false;
   die1: object = {};
+  dice: any = [];
+  scores: any = [];
+  highScores: any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.dice = [
+        {
+          "value": 1,
+          "selected": false
+        },{
+          "value": 2,
+          "selected": false
+        },{
+          "value": 3,
+          "selected": false
+        },{
+          "value": 4,
+          "selected": false
+        },{
+          "value": 5,
+          "selected": false
+        },{
+          "value": 6,
+          "selected": false
+        }
+      ]; //array of objects {"value": 1-6, "selected": false}
+    this.scores = [
+        {
+        'player': 0,
+        'CPU': 0
+        },{
+        'player': 1000,
+        'CPU': 2000
+        },{
+        'player': 5000,
+        'CPU': 2000
+        },{
+        'player': 5500,
+        'CPU': 3500
+        },{
+        'player': 7500,
+        'CPU': 4200
+        },{
+        'player': 10000,
+        'CPU': 6900
+        }
+      ];
+      this.highScores = {
+        'player': 10000,
+        'CPU': 6900
+      };
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Game');
       this.showHome = this.navParams.get("showHome");
       this.die1 = {"selected": false};
+      this.scores[0]['player'] = 0;
+      this.scores[0]['CPU'] = 0;
   }
  
   toGamelobby() {
