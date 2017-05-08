@@ -15,7 +15,7 @@ export class AppUsers {
     console.log('Hello AppUsers Provider');
   }
 
-  baseUrl: string = "http://sp-17-salvatore-jbrownssf.c9users.io:8080/api/"
+  baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:8080/api/"
   path: string = "farkleUsers"
   
   register(newUserData) {

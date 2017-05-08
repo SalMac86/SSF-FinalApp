@@ -22,22 +22,22 @@ export class Game {
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.dice = [
         {
-          "value": 1,
+          "value": "F",
           "selected": false
         },{
-          "value": 2,
+          "value": "A",
           "selected": false
         },{
-          "value": 3,
+          "value": "R",
           "selected": false
         },{
-          "value": 4,
+          "value": "K",
           "selected": false
         },{
-          "value": 5,
+          "value": "L",
           "selected": false
         },{
-          "value": 6,
+          "value": "E",
           "selected": false
         }
       ]; //array of objects {"value": 1-6, "selected": false}
@@ -71,7 +71,6 @@ export class Game {
   ionViewDidLoad() {
     console.log('ionViewDidLoad Game');
       this.showHome = this.navParams.get("showHome");
-      this.die1 = {"selected": false};
       this.scores[0]['player'] = 0;
       this.scores[0]['CPU'] = 0;
   }
@@ -82,10 +81,26 @@ export class Game {
     });
   }
   
-  selectDie1(){
-    this.die1['selected'] = !this.die1['selected'];
+  // selectDie1(){
+  //   this.die1['selected'] = !this.die1['selected'];
+  // }
+  //when a die is clicked from the page - this toggles the selection in the dice array
+  selectDie(die){
+    this.dice[die]['selected'] = !this.dice[die]['selected'];
+  }
+  //this will roll new values for any Un-Selected Dice in the dice array
+  rollEm(){
+     for (let i = 0;i < this.dice.length; i++){
+      if (!this.dice[i].selected){
+        this.dice[i].value = this.rollD6();
+      } 
+    }
   }
   
+  //return a value between 1 and 6
+  rollD6(){
+    return Math.floor(Math.random() * 6) + 1;
+  }
   // rollDice(diceTray){
   //   //{
   //   //take in the dice tray array of die objects that are indexed and valued with a isSelected bool
