@@ -19,7 +19,7 @@ export class Game {
   dice: any = [];
   scores: any = [];
   highScores: any;
-  countingDice: array = [];
+  countingDice: any = [];
   runningTotal: any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.dice = [
@@ -79,14 +79,22 @@ export class Game {
         'player': 10000,
         'CPU': 6900
       };
-      this.countingDice = [
-        {"ones": 0},
-        {"twos": 0},
-        {"threes": 0},
-        {"fours": 0},
-        {"fives": 0},
-        {"sixes": 0}
-      ]; //helps us score each set of dice - counts how many of each face value we're working with
+      this.countingDice = { //made it an object instead of array of objects
+        "ones": 0,
+        "twos": 0,
+        "threes": 0,
+        "fours": 0,
+        "fives": 0,
+        "sixes": 0
+        }; //helps us score each set of dice - counts how many of each face value we're working with
+      // this.countingDice = [
+      //   {"ones": 0},
+      //   {"twos": 0},
+      //   {"threes": 0},
+      //   {"fours": 0},
+      //   {"fives": 0},
+      //   {"sixes": 0}
+      // ]; //helps us score each set of dice - counts how many of each face value we're working with
   }
 
   ionViewDidLoad() {
@@ -107,22 +115,27 @@ export class Game {
   //   this.die1['selected'] = !this.die1['selected'];
   // }
   //when a die is clicked from the page - this toggles the selection in the dice array
-  selectDie(die){
-    if(!this.dice[die]['counted'])
-    this.dice[die]['selected'] = !this.dice[die]['selected'];
+  selectDie(dieIndex){
+    if(!this.dice[dieIndex]['counted'])
+    this.dice[dieIndex]['selected'] = !this.dice[dieIndex]['selected'];
   }
   //this will roll new values for any Un-Selected Dice in the dice array
   rollEm(){
-     for (let i = 0;i < this.dice.length; i++){
+    console.log(this.dice)
+    // first go through the dice and roll any that aren't selected.
+    for (let i = 0; i < this.dice.length; i++){
       if (!this.dice[i].selected){
         this.dice[i].value = this.rollD6();
-      } 
+      }
     }
+    //now we'll count any selected dice
+    // this.countEm()
+    
   }
   countEm(){
     //this will subtotal the selected dice from each re-roll
     //first, we iterate through all dice
-    this.dice.forEach(die){
+    this.dice.forEach(function(die){
       //if a die is selected, and hasn't been counted
       if (die.selected && !die.counted){
         switch(die){
@@ -137,13 +150,78 @@ export class Game {
         //this way we don't accidentaly let people score triples off of dice rolled seperately
         this.dice[die]['counted'] = true;
       }
-    };
+    })
+    //now that they're counted, we'll get a subtotal for the user
+    this.scoreEm(); //this will update the runningTotal.
+  }
+  scoreEm(){
+    //takes the countingDice array, and get a score
+    for (let [faceValue, count] of this.countingDice){
+      switch(faceValue){
+        case 'ones': switch(count){
+          case 6: this.runningTotal += 1000;
+          case 5: this.runningTotal += 1000;
+          case 4: this.runningTotal += 1000;
+          case 3: this.runningTotal += 800;
+          case 2: this.runningTotal += 100;
+          case 1: this.runningTotal += 100;
+          default: this.runningTotal += 0;
+        }; 
+        case 'fives': switch(count){
+          case 6: this.runningTotal += 500;
+          case 5: this.runningTotal += 500;
+          case 4: this.runningTotal += 500;
+          case 3: this.runningTotal += 350;
+          case 2: this.runningTotal += 100;
+          case 1: this.runningTotal += 50;
+          default: this.runningTotal += 0; break;
+        };
+        case 'sixes': switch(count){
+          case 6: this.runningTotal += 600;
+          case 5: this.runningTotal += 600;
+          case 4: this.runningTotal += 600;
+          case 3: this.runningTotal += 600;
+          case 2: this.runningTotal += 0;
+          case 1: this.runningTotal += 0;
+          default: this.runningTotal += 0; break
+        };
+        case 'fours': switch(count){
+          case 6: this.runningTotal += 400;
+          case 5: this.runningTotal += 400;
+          case 4: this.runningTotal += 400;
+          case 3: this.runningTotal += 400;
+          case 2: this.runningTotal += 0;
+          case 1: this.runningTotal += 0;
+          default: this.runningTotal += 0; break
+        };
+        case 'threes': switch(count){
+          case 6: this.runningTotal += 300;
+          case 5: this.runningTotal += 300;
+          case 4: this.runningTotal += 300;
+          case 3: this.runningTotal += 300;
+          case 2: this.runningTotal += 0;
+          case 1: this.runningTotal += 0;
+          default: this.runningTotal += 0; break
+        };
+        case 'twos': switch(count){
+          case 6: this.runningTotal += 200;
+          case 5: this.runningTotal += 200;
+          case 4: this.runningTotal += 200;
+          case 3: this.runningTotal += 200;
+          case 2: this.runningTotal += 0;
+          case 1: this.runningTotal += 0;
+          default: this.runningTotal += 0; break
+        };
+      };
+    }
   }
   bankIt(){
-    //we need to score this game somehow
+    //we need to score this game somehow =>scoreEm()
     //Okay, so on a very basic level take the values of the six dice - as an array?
     //then we can do a switch case on each die face value - so that singles, sets, etc get caught 
     //maybe cascade from 6 of a kind down ?
+    
+    //now that we have a score, and we haven't farkled, 
     
   }
   //return a value between 1 and 6

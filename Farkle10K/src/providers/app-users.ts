@@ -14,8 +14,9 @@ export class AppUsers {
   constructor(public http: Http) {
     console.log('Hello AppUsers Provider');
   }
-
-  baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:8080/api/"
+  
+  baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:/api/" //works at work
+  // baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:8080/api/" //works most places
   path: string = "farkleUsers"
   
   register(newUserData) {
