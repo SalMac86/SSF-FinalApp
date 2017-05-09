@@ -19,7 +19,7 @@ export class Game {
   dice: any = [];
   scores: any = [];
   highScores: any;
-  countingDice: any = [];
+  countingDice: any;
   runningTotal: any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.dice = [
@@ -129,16 +129,18 @@ export class Game {
       }
     }
     //now we'll count any selected dice
-    // this.countEm()
+    this.countEm()
     
   }
   countEm(){
+    console.log(this.dice);
+    console.log(this.countingDice);
     //this will subtotal the selected dice from each re-roll
     //first, we iterate through all dice
-    this.dice.forEach(function(die){
+    this.dice.forEach((die, index)=>{ //thanks John => "fat arrow" instead of function to fix scope
       //if a die is selected, and hasn't been counted
       if (die.selected && !die.counted){
-        switch(die){
+        switch(die.value){
           //iterate the counter of countingDice
           case 1: this.countingDice['ones']++; break;
           case 2: this.countingDice['twos']++; break;
@@ -148,7 +150,7 @@ export class Game {
           case 6: this.countingDice['sixes']++; break;
         }
         //this way we don't accidentaly let people score triples off of dice rolled seperately
-        this.dice[die]['counted'] = true;
+        this.dice[index]['counted'] = true;
       }
     })
     //now that they're counted, we'll get a subtotal for the user
