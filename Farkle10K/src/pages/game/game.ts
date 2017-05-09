@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Gamelobby } from '../gamelobby/gamelobby';
+
+import { GameSaver } from '../../providers/game-saver';
 /**
  * Generated class for the Game page.
  *
@@ -18,10 +20,15 @@ export class Game {
   // die1: object = {}; //from prototyping / testing
   dice: any = [];
   scores: any = [];
+  turns: any;
   highScores: any;
+  currentScore: any;
   countingDice: any;
   runningTotal: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public gameSaver: GameSaver) {
     this.dice = [
         {
           "value": "F",
@@ -56,30 +63,17 @@ export class Game {
         {
         'player': 0,
         'CPU': 0
-        },{
-        'player': 1000,
-        'CPU': 2000
-        },{
-        'player': 5000,
-        'CPU': 2000
-        },{
-        'player': 5500,
-        'CPU': 3500
-        },{
-        'player': 7500,
-        'CPU': 4200
-        },{
-        'player': 10000,
-        'CPU': 6900
         }
       ];
     //this is so that the current score can be seen - might be a betterway, but it will
     //also align with the highscore leader board later on, so we'll see
+    this.turns = 0;
     this.runningTotal = 0;
     this.highScores = {
-        'player': 10000,
-        'CPU': 6900
+        'player': 0,
+        'CPU': 0
       };
+    this.currentScore = 0;
     this.countingDice = { //made it an object instead of array of objects
         "ones": 0,
         "twos": 0,
@@ -156,16 +150,16 @@ export class Game {
       }
     })
     //now that they're counted, we'll get a subtotal for the user
-    console.log("countEm calling scoreEm");
-    this.scoreEm(); //this will update the runningTotal.
+    console.log("countEm calling scoreEm")
+    this.scoreEm()  //this will update the runningTotal.
   }
   scoreEm(){
     console.log("scoreEm called - now\n " + JSON.stringify(this.dice) + '\n' + JSON.stringify(this.countingDice) + '\n' + this.runningTotal)
     //takes the countingDice array, and get a score
     for (let faceValue in this.countingDice){
-      console.log("WOOOOHOOOO I'M RUNNING!!!!");
+      // console.log("WOOOOHOOOO I'M RUNNING!!!!");
       let count = this.countingDice[faceValue];
-      console.log("faceValue " + faceValue + '\n count ' + count)
+      // console.log("faceValue " + faceValue + '\n count ' + count)
       switch(faceValue){
         case 'ones': switch(count){
           case 6: this.runningTotal += 1000;
@@ -223,16 +217,60 @@ export class Game {
         }; break;
       };
     };
-    console.log("now runningTotal is " + this.runningTotal);
+    // console.log("now runningTotal is " + this.runningTotal);
+    //prevent score inflation from sets not rolled together
+    for(let face in this.countingDice){
+      this.countingDice[face] = 0;
+    };
   }
   bankIt(){
+    this.countEm();
+    this.scoreEm();
+    for(let turn of this.scores){
+      this.currentScore += turn['player'];
+      //this is trying to get a currentScore
+    }
     //we need to score this game somehow =>scoreEm()
-    //Okay, so on a very basic level take the values of the six dice - as an array?
-    //then we can do a switch case on each die face value - so that singles, sets, etc get caught 
-    //maybe cascade from 6 of a kind down ?
+          //Okay, so on a very basic level take the values of the six dice - as an array?
+          //then we can do a switch case on each die face value - so that singles, sets, etc get caught 
+          //maybe cascade from 6 of a kind down ?
+    //now that we have a score, and we haven't farkled 
     
-    //now that we have a score, and we haven't farkled, 
+    //save running total to scores
+    let oldScore = this.scores[this.turns]['player'];
+    this.scores.push({
+      'player': (this.runningTotal + oldScore),
+      'CPU': 0
+    });
+    //check running total against highscore - replace as needed
+    if(this.runningTotal > this.highScores['player']){
+      this.highScores['player'] += this.runningTotal;
+    };
+    //save highscore to backend
     
+    //save gamestate to backend
+    let userId = window.localStorage.getItem('userId'); 
+    let userScore = this.highScores['player'];
+    this.gameSaver.saveGame({
+      "userId": userId,
+      "userScore": userScore,
+      "cpuScore": 0,
+      "playerTurn": true
+    });
+    //reset running total
+    this.runningTotal = 0;
+    //unselect all dice
+    //uncount all dice
+    this.dice.forEach((die)=>{
+      die['selected'] = false;
+      die['counted'] = false;
+    });
+    for(let face in this.countingDice){
+      this.countingDice[face] = 0;
+    };
+    
+    //increment turn counter
+    this.turns += 1;
   }
   //return a value between 1 and 6
   rollD6(){

@@ -76,11 +76,11 @@
 <ion-card>
   <ion-card-header>Score
   <br />
-  <p style="text-align: center">{{ this.highScores['player'] }} : {{ this.highScores['CPU'] }}</p>
+  <p style="text-align: center">{{ this.currentScore }}</p>
   </ion-card-header>
   <ion-card-content>
     <ion-grid>
-      <ion-row>Running Total: {{this.runningTotal}}</ion-row>
+      <ion-row>Running Total: {{ this.scores[this.turns]['player'] }}</ion-row>
       <ion-row class="scoreHeader">
         <ion-col>Player</ion-col>
         <ion-col>CPU</ion-col>

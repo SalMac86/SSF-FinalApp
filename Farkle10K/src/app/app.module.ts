@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { AppUsers } from '../providers/app-users';
+import { GameSaver } from '../providers/game-saver';
 
 import { MyApp } from './app.component';
 import { About } from '../pages/about/about';
@@ -42,6 +43,7 @@ let injections = [
   entryComponents: injections,
   providers: [
     AppUsers,
+    GameSaver,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
