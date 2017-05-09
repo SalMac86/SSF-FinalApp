@@ -73,13 +73,14 @@ export class Game {
         'CPU': 6900
         }
       ];
-      //this is so that the current score can be seen - might be a betterway, but it will
-      //also align with the highscore leader board later on, so we'll see
-      this.highScores = {
+    //this is so that the current score can be seen - might be a betterway, but it will
+    //also align with the highscore leader board later on, so we'll see
+    this.runningTotal = 0;
+    this.highScores = {
         'player': 10000,
         'CPU': 6900
       };
-      this.countingDice = { //made it an object instead of array of objects
+    this.countingDice = { //made it an object instead of array of objects
         "ones": 0,
         "twos": 0,
         "threes": 0,
@@ -87,7 +88,7 @@ export class Game {
         "fives": 0,
         "sixes": 0
         }; //helps us score each set of dice - counts how many of each face value we're working with
-      // this.countingDice = [
+    // this.countingDice = [
       //   {"ones": 0},
       //   {"twos": 0},
       //   {"threes": 0},
@@ -121,7 +122,7 @@ export class Game {
   }
   //this will roll new values for any Un-Selected Dice in the dice array
   rollEm(){
-    console.log(this.dice)
+    console.log("called rollEm on: " + JSON.stringify(this.dice))
     // first go through the dice and roll any that aren't selected.
     for (let i = 0; i < this.dice.length; i++){
       if (!this.dice[i].selected){
@@ -129,12 +130,13 @@ export class Game {
       }
     }
     //now we'll count any selected dice
+    console.log("rollEm calling countEm")
     this.countEm()
     
   }
   countEm(){
-    console.log(this.dice);
-    console.log(this.countingDice);
+    console.log("countEm called on " + JSON.stringify(this.dice));
+    console.log("starting with " + JSON.stringify(this.countingDice));
     //this will subtotal the selected dice from each re-roll
     //first, we iterate through all dice
     this.dice.forEach((die, index)=>{ //thanks John => "fat arrow" instead of function to fix scope
@@ -142,23 +144,28 @@ export class Game {
       if (die.selected && !die.counted){
         switch(die.value){
           //iterate the counter of countingDice
-          case 1: this.countingDice['ones']++; break;
-          case 2: this.countingDice['twos']++; break;
-          case 3: this.countingDice['threes']++; break;
-          case 4: this.countingDice['fours']++; break;
-          case 5: this.countingDice['fives']++; break;
-          case 6: this.countingDice['sixes']++; break;
+          case 1: this.countingDice['ones'] += 1; break;
+          case 2: this.countingDice['twos'] += 1; break;
+          case 3: this.countingDice['threes'] += 1; break;
+          case 4: this.countingDice['fours'] += 1; break;
+          case 5: this.countingDice['fives'] += 1; break;
+          case 6: this.countingDice['sixes'] += 1; break;
         }
         //this way we don't accidentaly let people score triples off of dice rolled seperately
         this.dice[index]['counted'] = true;
       }
     })
     //now that they're counted, we'll get a subtotal for the user
+    console.log("countEm calling scoreEm");
     this.scoreEm(); //this will update the runningTotal.
   }
   scoreEm(){
+    console.log("scoreEm called - now\n " + JSON.stringify(this.dice) + '\n' + JSON.stringify(this.countingDice) + '\n' + this.runningTotal)
     //takes the countingDice array, and get a score
-    for (let [faceValue, count] of this.countingDice){
+    for (let faceValue in this.countingDice){
+      console.log("WOOOOHOOOO I'M RUNNING!!!!");
+      let count = this.countingDice[faceValue];
+      console.log("faceValue " + faceValue + '\n count ' + count)
       switch(faceValue){
         case 'ones': switch(count){
           case 6: this.runningTotal += 1000;
@@ -167,8 +174,8 @@ export class Game {
           case 3: this.runningTotal += 800;
           case 2: this.runningTotal += 100;
           case 1: this.runningTotal += 100;
-          default: this.runningTotal += 0;
-        }; 
+          default: this.runningTotal += 0; break;
+        }; break;
         case 'fives': switch(count){
           case 6: this.runningTotal += 500;
           case 5: this.runningTotal += 500;
@@ -177,7 +184,7 @@ export class Game {
           case 2: this.runningTotal += 100;
           case 1: this.runningTotal += 50;
           default: this.runningTotal += 0; break;
-        };
+        }; break;
         case 'sixes': switch(count){
           case 6: this.runningTotal += 600;
           case 5: this.runningTotal += 600;
@@ -186,7 +193,7 @@ export class Game {
           case 2: this.runningTotal += 0;
           case 1: this.runningTotal += 0;
           default: this.runningTotal += 0; break
-        };
+        }; break;
         case 'fours': switch(count){
           case 6: this.runningTotal += 400;
           case 5: this.runningTotal += 400;
@@ -195,7 +202,7 @@ export class Game {
           case 2: this.runningTotal += 0;
           case 1: this.runningTotal += 0;
           default: this.runningTotal += 0; break
-        };
+        }; break;
         case 'threes': switch(count){
           case 6: this.runningTotal += 300;
           case 5: this.runningTotal += 300;
@@ -204,7 +211,7 @@ export class Game {
           case 2: this.runningTotal += 0;
           case 1: this.runningTotal += 0;
           default: this.runningTotal += 0; break
-        };
+        }; break;
         case 'twos': switch(count){
           case 6: this.runningTotal += 200;
           case 5: this.runningTotal += 200;
@@ -213,9 +220,10 @@ export class Game {
           case 2: this.runningTotal += 0;
           case 1: this.runningTotal += 0;
           default: this.runningTotal += 0; break
-        };
+        }; break;
       };
-    }
+    };
+    console.log("now runningTotal is " + this.runningTotal);
   }
   bankIt(){
     //we need to score this game somehow =>scoreEm()
