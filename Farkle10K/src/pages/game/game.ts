@@ -20,11 +20,13 @@ export class Game {
   // die1: object = {}; //from prototyping / testing
   dice: any = [];
   scores: any = [];
-  playerScore: any;
   turns: any;
   highScores: any;
+  currentScore: any;
   countingDice: any;
   runningTotal: any;
+  farkleDice: any = [];
+  farkleCount: any;
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -73,6 +75,7 @@ export class Game {
         'player': 0,
         'CPU': 0
       };
+    this.currentScore = 0;
     this.countingDice = { //made it an object instead of array of objects
         "ones": 0,
         "twos": 0,
@@ -89,6 +92,14 @@ export class Game {
       //   {"fives": 0},
       //   {"sixes": 0}
       // ]; //helps us score each set of dice - counts how many of each face value we're working with
+    this.farkleCount = { //made it an object instead of array of objects
+        "ones": 0,
+        "twos": 0,
+        "threes": 0,
+        "fours": 0,
+        "fives": 0,
+        "sixes": 0
+        };
   }
 
   ionViewDidLoad() {
@@ -125,8 +136,32 @@ export class Game {
     //now we'll count any selected dice
     console.log("rollEm calling countEm")
     this.countEm()
+    // Need to check if the user Farkled (zero point roll)
+    this.didFarkle()
+    // Need to check if user has RollOver (all scoring dice)
     
   }
+  didFarkle(){
+    // go through all the dice
+    for (let i=0; i < this.dice.length;i++){
+      //look for ones that aren't selected/counted - end turn if no scoring dice exist
+      if(!this.dice[i].selected && !this.dice[i].counted){
+        this.farkleDice.push(this.dice[i]);
+      }
+    }
+    for (let i=0; this.farkleDice.length; i++){
+      switch(this.farkleDice[i]){
+        case 1: this.farkleCount['ones'] += 1; break;
+        case 2: this.farkleCount['twos'] += 1; break;
+        case 3: this.farkleCount['threes'] += 1; break;
+        case 4: this.farkleCount['fours'] += 1; break;
+        case 5: this.farkleCount['fives'] += 1; break;
+        case 6: this.farkleCount['sixes'] += 1; break;
+      }
+    }
+    
+  }
+  
   countEm(){
     console.log("countEm called on " + JSON.stringify(this.dice));
     console.log("starting with " + JSON.stringify(this.countingDice));
@@ -149,8 +184,8 @@ export class Game {
       }
     })
     //now that they're counted, we'll get a subtotal for the user
-    console.log("countEm calling scoreEm");
-    this.scoreEm(); //this will update the runningTotal.
+    console.log("countEm calling scoreEm")
+    this.scoreEm()  //this will update the runningTotal.
   }
   scoreEm(){
     console.log("scoreEm called - now\n " + JSON.stringify(this.dice) + '\n' + JSON.stringify(this.countingDice) + '\n' + this.runningTotal)
@@ -222,17 +257,13 @@ export class Game {
       this.countingDice[face] = 0;
     };
   }
-  updatePlayerScore(){
-    let x = 0;
-    for (let score of this.scores){
-      console.log(score);
-      x += score['player'];
-      console.log(score['player']);
-    }
-    this.playerScore = x;
-  }
   bankIt(){
     this.countEm();
+    this.scoreEm();
+    for(let turn of this.scores){
+      this.currentScore += turn['player'];
+      //this is trying to get a currentScore, but might multiply
+    }
     //we need to score this game somehow =>scoreEm()
           //Okay, so on a very basic level take the values of the six dice - as an array?
           //then we can do a switch case on each die face value - so that singles, sets, etc get caught 
@@ -240,8 +271,9 @@ export class Game {
     //now that we have a score, and we haven't farkled 
     
     //save running total to scores
+    let oldScore = this.scores[this.turns]['player'];
     this.scores.push({
-      'player': this.runningTotal,
+      'player': (this.runningTotal + oldScore),
       'CPU': 0
     });
     //check running total against highscore - replace as needed
@@ -251,47 +283,22 @@ export class Game {
     //save highscore to backend
     
     //save gamestate to backend
+    let userId = window.localStorage.getItem('userId'); 
+    let userScore = this.highScores['player'];
     this.gameSaver.saveGame({
-      "userId": window.localStorage.getItem('userId'),
-      "userScore": this.highScores['player'],
+      "userId": userId,
+      "userScore": userScore,
       "cpuScore": 0,
       "playerTurn": true
     });
-    //update playerScore
-    this.updatePlayerScore();
     //reset running total
     this.runningTotal = 0;
     //unselect all dice
     //uncount all dice
-   this.dice = [
-      {
-        "value": "F",
-        "selected": false,
-        "counted": false
-      },{
-        "value": "A",
-        "selected": false,
-        "counted": false
-      },{
-        "value": "R",
-        "selected": false,
-        "counted": false
-      },{
-        "value": "K",
-        "selected": false,
-        "counted": false
-      },{
-        "value": "L",
-        "selected": false,
-        "counted": false
-      },{
-        "value": "E",
-        "selected": false,
-        "counted": false
-      }
-    ];
-    
-    
+    this.dice.forEach((die)=>{
+      die['selected'] = false;
+      die['counted'] = false;
+    });
     for(let face in this.countingDice){
       this.countingDice[face] = 0;
     };
