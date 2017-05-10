@@ -15,7 +15,7 @@ export class GameSaver {
     console.log('Hello GameSaver Provider');
   }
   
-  // baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:/api/" //works at work
+  // baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io/api/" //works at work
   baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:8080/api/" //works most places
   path: string = "Games"
   

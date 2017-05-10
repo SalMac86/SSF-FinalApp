@@ -62,7 +62,7 @@
         <!--<ion-col>CPU</ion-col>-->
       </ion-row>
       <ion-row *ngFor="let score of scores">
-        <ion-col>{{score['player']}}</ion-col>
+        <ion-col *ngIf="score['player'] > 0">{{score['player']}}</ion-col>
         <!--<ion-col>{{score['CPU']}}</ion-col>-->
       </ion-row>
     </ion-grid>

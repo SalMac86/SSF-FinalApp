@@ -19,7 +19,7 @@
 <form #loginForm="ngForm" (ngSubmit)="logForm(loginForm)" novalidate>
         <ion-item>
             <ion-label>Username</ion-label>
-            <ion-input name="username" type="text" placeholder="FarkleMaster123" [(ngModel)]="user.email" required></ion-input>
+            <ion-input name="email" type="email" placeholder="FarkleMaster123" [(ngModel)]="user.email" required></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>Password</ion-label>
