@@ -33,30 +33,6 @@
     </ion-col>
   </ion-row>
 </ion-grid>
-  <!--<ion-grid>-->
-  <!--  <ion-row>-->
-  <!--    <ion-col padding class="dicedisplay" [ngClass]="{'selected': this.die1.selected}">-->
-  <!--      <button (click)="selectDie1()"><p>Die 1</p></button>-->
-  <!--    </ion-col>-->
-  <!--    <ion-col padding class="dicedisplay">-->
-  <!--      Die 2-->
-  <!--    </ion-col>-->
-  <!--    <ion-col padding class="dicedisplay">-->
-  <!--      Die 3-->
-  <!--    </ion-col>-->
-  <!--  </ion-row>-->
-  <!--  <ion-row>-->
-  <!--    <ion-col padding class="dicedisplay">-->
-  <!--      Die 4-->
-  <!--    </ion-col>-->
-  <!--    <ion-col padding class="dicedisplay">-->
-  <!--      Die 5-->
-  <!--    </ion-col>-->
-  <!--    <ion-col padding class="dicedisplay">-->
-  <!--      Die 6-->
-  <!--    </ion-col>-->
-  <!--  </ion-row>-->
-  <!--</ion-grid>-->
 </ion-card>
 <ion-card>
   <ion-buttons>
@@ -76,18 +52,18 @@
 <ion-card>
   <ion-card-header>Score
   <br />
-  <p style="text-align: center">{{ this.currentScore }}</p>
+  <p style="text-align: center">{{ this.playerScore }}</p>
   </ion-card-header>
   <ion-card-content>
     <ion-grid>
-      <ion-row>Running Total: {{ this.scores[this.turns]['player'] }}</ion-row>
+      <ion-row>Running Total: {{ this.runningTotal }}</ion-row>
       <ion-row class="scoreHeader">
-        <ion-col>Player</ion-col>
-        <ion-col>CPU</ion-col>
+        <ion-col>Username</ion-col>
+        <!--<ion-col>CPU</ion-col>-->
       </ion-row>
       <ion-row *ngFor="let score of scores">
         <ion-col>{{score['player']}}</ion-col>
-        <ion-col>{{score['CPU']}}</ion-col>
+        <!--<ion-col>{{score['CPU']}}</ion-col>-->
       </ion-row>
     </ion-grid>
   </ion-card-content>
