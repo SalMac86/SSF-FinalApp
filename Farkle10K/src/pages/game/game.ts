@@ -171,6 +171,11 @@ export class Game {
   }
   //this will roll new values for any Un-Selected Dice in the dice array
   rollEm(){
+    if (this.byPassFarkle){
+      for (let i = 0; i < this.dice.length; i++){
+        this.dice[i]['counted'] = false;
+      }
+    }
     console.log("called rollEm on: " + JSON.stringify(this.dice))
     // first go through the dice and roll any that aren't selected.
     for (let i = 0; i < this.dice.length; i++){
