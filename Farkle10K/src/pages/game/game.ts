@@ -198,7 +198,7 @@ export class Game {
     alert("Hot Dice!\nRoll Again!");
     for (let i = 0; i<this.dice.length;i++){
       this.dice[i].selected = false;
-      this.dice[i].counted = false;
+      this.dice[i].counted = true;
       this.byPassFarkle = true;
     }
   }
