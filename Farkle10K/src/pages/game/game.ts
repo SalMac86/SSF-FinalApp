@@ -518,24 +518,29 @@ export class Game {
     this.turns += 1;
     if (this.currentScore >= 10000){
       alert("You Win!!!\nYour Score: "+ this.currentScore);
-      this.navCtrl.push(Gamelobby, {showHome: true});
       //save gamestate to backend
-    let userId = window.localStorage.getItem('userId');
-    // let token = window.localStorage.getItem('token');
-    let userScore = this.highScores['player'];
-    let gameData = {
-      "userId": userId,
-      "userScore": userScore,
-      "cpuScore": 0,
-      "playerTurn": true
-    };
-    this.gameSaver.saveGame(gameData);
-    }
+      let userId = window.localStorage.getItem('userId');
+      let token = window.localStorage.getItem('token');
+      let userScore = this.currentScore;
+      let gameData = {
+        "userId": userId,
+        "userScore": userScore,
+        "cpuScore": 0,
+        "playerTurn": true
+      };
+      this.gameSaver.saveGame(token, gameData)
+      .map((res) => res.json())
+      .subscribe(res=>{
+        this.navCtrl.push(Gamelobby, {showHome: true});
+        
+      });
+      }
   }
   
   //return a value between 1 and 6
   rollD6(){
-    return Math.floor(Math.random() * 6) + 1;
+    return 1;
+    // return Math.floor(Math.random() * 6) + 1;
   }
   // rollDice(diceTray){
   //   //{

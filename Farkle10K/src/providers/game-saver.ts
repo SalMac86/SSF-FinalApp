@@ -19,9 +19,11 @@ export class GameSaver {
   baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:8080/api" //works most places
   path: string = "/Games"
   
-  saveGame(UserData){
+  saveGame(token, UserData){
+    console.log("token = " + token + "\nUserData = " + JSON.stringify(UserData));
     return this.http.post(
-      this.baseUrl + this.path,
+      this.baseUrl + this.path +
+      "?access_token=" + token,
       UserData
       );
   }
