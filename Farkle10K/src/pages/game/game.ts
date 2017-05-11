@@ -27,6 +27,7 @@ export class Game {
   runningTotal: any;
   farkleDice: any = [];
   farkleCount: any;
+  farkleTotal: any;
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -100,6 +101,34 @@ export class Game {
         "fives": 0,
         "sixes": 0
         };
+    this.farkleDice = [
+      {
+        "value": "F",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "A",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "R",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "K",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "L",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "E",
+        "selected": false,
+        "counted": false
+      }
+    ];
+    this.farkleTotal = 0;
   }
 
   ionViewDidLoad() {
@@ -133,24 +162,38 @@ export class Game {
         this.dice[i].value = this.rollD6();
       }
     }
+    // Need to check if the user Farkled (zero point roll)
+    this.didFarkle();
     //now we'll count any selected dice
     console.log("rollEm calling countEm")
     this.countEm()
-    // Need to check if the user Farkled (zero point roll)
-    this.didFarkle()
+    
     // Need to check if user has RollOver (all scoring dice)
     
   }
   didFarkle(){
+    this.farkleCount = { //reset the farkleCount
+        "ones": 0,
+        "twos": 0,
+        "threes": 0,
+        "fours": 0,
+        "fives": 0,
+        "sixes": 0
+        };
     // go through all the dice
     for (let i=0; i < this.dice.length;i++){
       //look for ones that aren't selected/counted - end turn if no scoring dice exist
       if(!this.dice[i].selected && !this.dice[i].counted){
-        this.farkleDice.push(this.dice[i]);
+        this.farkleDice[i]['value'] = this.dice[i]['value'];
+        this.farkleDice[i]['counted'] = this.dice[i]['counted'];
       }
     }
-    for (let i=0; this.farkleDice.length; i++){
-      switch(this.farkleDice[i]){
+    console.log("beginning of didFarkle: .farkleDice :" + JSON.stringify(this.farkleDice));
+    // count the unselected, uncounted dice
+    for (let i=0; i < this.farkleDice.length; i++){
+      console.log(this.farkleDice[i]);
+      if(!this.farkleDice[i]['counted']){
+      switch(this.farkleDice[i]['value']){
         case 1: this.farkleCount['ones'] += 1; break;
         case 2: this.farkleCount['twos'] += 1; break;
         case 3: this.farkleCount['threes'] += 1; break;
@@ -158,8 +201,121 @@ export class Game {
         case 5: this.farkleCount['fives'] += 1; break;
         case 6: this.farkleCount['sixes'] += 1; break;
       }
+      this.farkleDice[i]['counted'] = true;
+      }
+    }
+    //now we score the unselected, uncounted dice
+    for (let faceValue in this.farkleCount){
+      let count = this.farkleCount[faceValue];
+      switch(faceValue){
+        case 'ones': switch(count){
+          case 6: this.farkleTotal += 1000;
+          case 5: this.farkleTotal += 1000;
+          case 4: this.farkleTotal += 1000;
+          case 3: this.farkleTotal += 800;
+          case 2: this.farkleTotal += 100;
+          case 1: this.farkleTotal += 100;
+          default: this.farkleTotal += 0; break;
+        }; break;
+        case 'fives': switch(count){
+          case 6: this.farkleTotal += 500;
+          case 5: this.farkleTotal += 500;
+          case 4: this.farkleTotal += 500;
+          case 3: this.farkleTotal += 400;
+          case 2: this.farkleTotal += 50;
+          case 1: this.farkleTotal += 50;
+          default: this.farkleTotal += 0; break;
+        }; break;
+        case 'sixes': switch(count){
+          case 6: this.farkleTotal += 600;
+          case 5: this.farkleTotal += 600;
+          case 4: this.farkleTotal += 600;
+          case 3: this.farkleTotal += 600;
+          case 2: this.farkleTotal += 0;
+          case 1: this.farkleTotal += 0;
+          default: this.farkleTotal += 0; break
+        }; break;
+        case 'fours': switch(count){
+          case 6: this.farkleTotal += 400;
+          case 5: this.farkleTotal += 400;
+          case 4: this.farkleTotal += 400;
+          case 3: this.farkleTotal += 400;
+          case 2: this.farkleTotal += 0;
+          case 1: this.farkleTotal += 0;
+          default: this.farkleTotal += 0; break
+        }; break;
+        case 'threes': switch(count){
+          case 6: this.farkleTotal += 300;
+          case 5: this.farkleTotal += 300;
+          case 4: this.farkleTotal += 300;
+          case 3: this.farkleTotal += 300;
+          case 2: this.farkleTotal += 0;
+          case 1: this.farkleTotal += 0;
+          default: this.farkleTotal += 0; break
+        }; break;
+        case 'twos': switch(count){
+          case 6: this.farkleTotal += 200;
+          case 5: this.farkleTotal += 200;
+          case 4: this.farkleTotal += 200;
+          case 3: this.farkleTotal += 200;
+          case 2: this.farkleTotal += 0;
+          case 1: this.farkleTotal += 0;
+          default: this.farkleTotal += 0; break
+        }; break;
+      };
+    }
+    // now we have a totalFarkle which is the potential score for the unselected uncounted dice
+    // if that is not greater than zero, the user farkled, 
+    // losing any stored pints and ending the turn
+    
+    if (this.farkleTotal === 0){
+      this.runningTotal = 0;
+      this.dice = [
+      {
+        "value": "F",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "A",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "R",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "K",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "L",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "E",
+        "selected": false,
+        "counted": false
+      }
+    ];
+      this.turns += 1;
+      this.scores.push({'player': 0, 'CPU': 0});
+      this.farkleCount = { //reset the farkleCount
+        "ones": 0,
+        "twos": 0,
+        "threes": 0,
+        "fours": 0,
+        "fives": 0,
+        "sixes": 0
+        };
+      alert("You Farkled!");
     }
     
+     console.log("didFarkle ran " + 
+      "\n.farkleDice: " + JSON.stringify(this.farkleDice) +  
+      "\n.farkleCount: " + JSON.stringify(this.farkleCount) + 
+      "\n.farkleTotal: " + JSON.stringify(this.farkleTotal)
+    );
+    this.farkleTotal = 0;
   }
   
   countEm(){
@@ -208,8 +364,8 @@ export class Game {
           case 6: this.runningTotal += 500;
           case 5: this.runningTotal += 500;
           case 4: this.runningTotal += 500;
-          case 3: this.runningTotal += 350;
-          case 2: this.runningTotal += 100;
+          case 3: this.runningTotal += 400;
+          case 2: this.runningTotal += 50;
           case 1: this.runningTotal += 50;
           default: this.runningTotal += 0; break;
         }; break;
@@ -256,34 +412,37 @@ export class Game {
     for(let face in this.countingDice){
       this.countingDice[face] = 0;
     };
+    console.log("scoreEm says runningTotal is: "+this.runningTotal);
   }
+  
   bankIt(){
     this.countEm();
     this.scoreEm();
-    for(let turn of this.scores){
-      this.currentScore += turn['player'];
+     //save running total to scores
+    this.scores.push({
+      'player': (this.runningTotal),
+      'CPU': 0
+    });
+    
+    this.currentScore += this.runningTotal;
       //this is trying to get a currentScore, but might multiply
-    }
     //we need to score this game somehow =>scoreEm()
           //Okay, so on a very basic level take the values of the six dice - as an array?
           //then we can do a switch case on each die face value - so that singles, sets, etc get caught 
           //maybe cascade from 6 of a kind down ?
     //now that we have a score, and we haven't farkled 
     
-    //save running total to scores
-    let oldScore = this.scores[this.turns]['player'];
-    this.scores.push({
-      'player': (this.runningTotal + oldScore),
-      'CPU': 0
-    });
+   
     //check running total against highscore - replace as needed
-    if(this.runningTotal > this.highScores['player']){
-      this.highScores['player'] += this.runningTotal;
+    if(this.currentScore > this.highScores['player']){
+      this.highScores['player'] += this.currentScore;
     };
     //save highscore to backend
     
     //save gamestate to backend
-    let userId = window.localStorage.getItem('userId'); 
+    let userId = window.localStorage.getItem('userId');
+    // let token = window.localStorage.getItem('token');
+    
     let userScore = this.highScores['player'];
     this.gameSaver.saveGame({
       "userId": userId,
@@ -295,17 +454,45 @@ export class Game {
     this.runningTotal = 0;
     //unselect all dice
     //uncount all dice
-    this.dice.forEach((die)=>{
-      die['selected'] = false;
-      die['counted'] = false;
-    });
+    this.dice = [
+      {
+        "value": "F",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "A",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "R",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "K",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "L",
+        "selected": false,
+        "counted": false
+      },{
+        "value": "E",
+        "selected": false,
+        "counted": false
+      }
+    ];
     for(let face in this.countingDice){
       this.countingDice[face] = 0;
     };
     
     //increment turn counter
     this.turns += 1;
+    if (this.currentScore >= 10000){
+      alert("You Win!!!");
+      this.navCtrl.push(Gamelobby, {showHome: true});
+    }
   }
+  
   //return a value between 1 and 6
   rollD6(){
     return Math.floor(Math.random() * 6) + 1;
