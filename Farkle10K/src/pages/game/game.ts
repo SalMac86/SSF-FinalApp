@@ -28,6 +28,9 @@ export class Game {
   farkleDice: any = [];
   farkleCount: any;
   farkleTotal: any;
+  hotDiceCounter: any;
+  hotScore: any;
+  byPassFarkle: any;
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -70,6 +73,9 @@ export class Game {
       ];
     //this is so that the current score can be seen - might be a betterway, but it will
     //also align with the highscore leader board later on, so we'll see
+    this.hotDiceCounter = 0;
+    this.hotScore = 0;
+    this.byPassFarkle = false;
     this.turns = 0;
     this.runningTotal = 0;
     this.highScores = {
@@ -152,6 +158,16 @@ export class Game {
   selectDie(dieIndex){
     if(!this.dice[dieIndex]['counted'])
     this.dice[dieIndex]['selected'] = !this.dice[dieIndex]['selected'];
+    
+    for (let i = 0; i < this.dice.length; i++){
+      if(this.dice[i].selected){
+        this.hotDiceCounter++;
+      }
+    }
+    if (this.hotDiceCounter === 6){
+      this.hotDice();
+    }
+    this.hotDiceCounter = 0;
   }
   //this will roll new values for any Un-Selected Dice in the dice array
   rollEm(){
@@ -162,14 +178,29 @@ export class Game {
         this.dice[i].value = this.rollD6();
       }
     }
-    // Need to check if the user Farkled (zero point roll)
-    this.didFarkle();
+    // Need to check if user has RollOver (all scoring dice)
+    // this.hotDice(); maybe move this to selectedDie?
+    if(!this.byPassFarkle){
+      // Need to check if the user Farkled (zero point roll)
+      this.didFarkle();
+    }
+    this.byPassFarkle = false;
     //now we'll count any selected dice
     console.log("rollEm calling countEm")
     this.countEm()
     
-    // Need to check if user has RollOver (all scoring dice)
-    
+  }
+  hotDice(){
+    //
+    this.countEm();
+    this.scoreEm();
+    this.hotScore += this.runningTotal;
+    alert("Hot Dice!\nRoll Again!");
+    for (let i = 0; i<this.dice.length;i++){
+      this.dice[i].selected = false;
+      this.dice[i].counted = false;
+      this.byPassFarkle = true;
+    }
   }
   didFarkle(){
     this.farkleCount = { //reset the farkleCount
@@ -412,6 +443,9 @@ export class Game {
     for(let face in this.countingDice){
       this.countingDice[face] = 0;
     };
+    //make sure our running total includes hot dice, but doesn't get to add it multiple times
+    this.runningTotal += this.hotScore;
+    this.hotScore  = 0;
     console.log("scoreEm says runningTotal is: "+this.runningTotal);
   }
   
@@ -439,17 +473,7 @@ export class Game {
     };
     //save highscore to backend
     
-    //save gamestate to backend
-    let userId = window.localStorage.getItem('userId');
-    // let token = window.localStorage.getItem('token');
     
-    let userScore = this.highScores['player'];
-    this.gameSaver.saveGame({
-      "userId": userId,
-      "userScore": userScore,
-      "cpuScore": 0,
-      "playerTurn": true
-    });
     //reset running total
     this.runningTotal = 0;
     //unselect all dice
@@ -488,8 +512,19 @@ export class Game {
     //increment turn counter
     this.turns += 1;
     if (this.currentScore >= 10000){
-      alert("You Win!!!");
+      alert("You Win!!!\nYour Score: "+ this.currentScore);
       this.navCtrl.push(Gamelobby, {showHome: true});
+      //save gamestate to backend
+    let userId = window.localStorage.getItem('userId');
+    // let token = window.localStorage.getItem('token');
+    let userScore = this.highScores['player'];
+    let gameData = {
+      "userId": userId,
+      "userScore": userScore,
+      "cpuScore": 0,
+      "playerTurn": true
+    };
+    this.gameSaver.saveGame(gameData);
     }
   }
   

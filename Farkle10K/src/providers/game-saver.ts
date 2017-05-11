@@ -16,8 +16,8 @@ export class GameSaver {
   }
   
   // baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:/api/" //works at work
-  baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:8080/api/" //works most places
-  path: string = "Games"
+  baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:8080/api" //works most places
+  path: string = "/Games"
   
   saveGame(UserData){
     return this.http.post(
