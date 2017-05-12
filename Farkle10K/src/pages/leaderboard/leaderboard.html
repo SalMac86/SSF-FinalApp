@@ -7,12 +7,30 @@
 <ion-header padding >
 
   <ion-navbar padding color="primary" text-center>
-    <ion-title>leaderboard</ion-title>
+    <ion-title>High Scores</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding fab-center>
-
+<ion-card>
+  <ion-card-header>
+    Leaderboard
+  </ion-card-header>
+  <ion-card-content>
+    <ion-list>
+      <ion-grid>
+        <ion-row>
+          <ion-col>Player</ion-col>
+          <ion-col>Score</ion-col>
+        </ion-row>
+      <ion-row *ngFor="let highScore of highScores; let index = index" *ngIf="index <= 5">
+        <ion-col>{{highScore.username}}</ion-col>
+        <ion-col>{{highScore.score}}</ion-col>
+      </ion-row>  
+      </ion-grid>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
 </ion-content>

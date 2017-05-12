@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Rules } from '../rules/rules';
 import { Game } from '../game/game';
+import { Leaderboard } from '../leaderboard/leaderboard';
 /**
  * Generated class for the Gamelobby page.
  *
@@ -32,6 +33,11 @@ export class Gamelobby {
     this.navCtrl.push(Rules,{
       showHome: true,
       fromRegister: true
+    })
+  }
+  goLeaderboard() {
+    this.navCtrl.push(Leaderboard, {
+      showHome: true
     })
   }
 
