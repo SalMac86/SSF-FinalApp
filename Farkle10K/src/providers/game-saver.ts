@@ -17,14 +17,30 @@ export class GameSaver {
   
   // baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:/api/" //works at work
   baseUrl: string = "https://sp-17-salvatore-jbrownssf.c9users.io:8080/api" //works most places
-  path: string = "/Games"
+  gamePath: string = "/Games"
+  // highPath: string = "/Highscores"
   
   saveGame(token, UserData){
     console.log("token = " + token + "\nUserData = " + JSON.stringify(UserData));
     return this.http.post(
-      this.baseUrl + this.path +
+      this.baseUrl + this.gamePath +
       "?access_token=" + token,
       UserData
+      );
+  }
+  
+  // getHighScores(token){
+  //   return this.http.get(
+  //     this.baseUrl + this.highPath +
+  //     "?access_token=" + token
+  //     );
+  // }
+  
+  getUserScore(token, userId){
+    return this.http.get(
+      this.baseUrl + this.gamePath +
+      "?access_token=" + token +
+      "&filter=" + '{"where":{"userId:'+ userId +'}'
       );
   }
 
