@@ -37,11 +37,10 @@ export class GameSaver {
   // }
   
   getUserScore(token, userId){
-    return this.http.get(
-      this.baseUrl + this.gamePath +
-      "?access_token=" + token +
-      "&filter=" + '{"where":{"userId:'+ userId +'}'
-      );
+     return this.http.get(
+      this.baseUrl + this.gamePath + 
+        '?filter[userId]=' + userId +
+        '&access_token=' + token
+    );
   }
-
 }

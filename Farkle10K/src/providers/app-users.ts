@@ -31,6 +31,14 @@ export class AppUsers {
       userData
       )
   }
-  
+  getUserName(userId){
+    // return 
+    let userName = '';
+    this.http.get(
+      this.baseUrl + this.path +
+      '?filter[where][id]=' + userId
+      ).map(res=>res.json()).subscribe(result=> userName = result.username);
+      return userName;
+  }
   
 }
