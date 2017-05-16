@@ -31,14 +31,25 @@ export class AppUsers {
       userData
       )
   }
+  getUserNames(){
+    // return 
+    // let userName = '';
+    return this.http.get(
+      this.baseUrl + this.path 
+      // +
+      // '?filter[where][id]=' + userId
+      );
+      // ).map(res=>res.json()).subscribe(result=> userName = result.username);
+      // return userName;
+  }
   getUserName(userId){
     // return 
-    let userName = '';
-    this.http.get(
+    // let userName = '';
+    return this.http.get(
       this.baseUrl + this.path +
       '?filter[where][id]=' + userId
-      ).map(res=>res.json()).subscribe(result=> userName = result.username);
-      return userName;
+      );
+      // ).map(res=>res.json()).subscribe(result=> userName = result.username);
+      // return userName;
   }
-  
 }

@@ -21,6 +21,10 @@
     "playerTurn": {
       "type": "boolean",
       "required": true
+    },
+    "userName": {
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],

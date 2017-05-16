@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Gamelobby } from '../gamelobby/gamelobby';
 
 import { GameSaver } from '../../providers/game-saver';
+import { AppUsers } from '../../providers/app-users';
 /**
  * Generated class for the Game page.
  *
@@ -34,7 +35,8 @@ export class Game {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public gameSaver: GameSaver) {
+    public gameSaver: GameSaver,
+    public appUsers: AppUsers) {
     this.dice = [
         {
           "value": "F",
@@ -521,18 +523,28 @@ export class Game {
       //save gamestate to backend
       let userId = window.localStorage.getItem('userId');
       let token = window.localStorage.getItem('token');
+      let userName = '';
       let userScore = this.currentScore;
+      let userNames = this.appUsers.getUserName(userId).map(res=>res.json()).subscribe(result=>{
+        userName = result[0].username;
+        console.log("result[0] "+result[0].username);
+        console.log("userName "+userName);
+      });
+      console.log("userNames " + userNames);
+      console.log("userName " + userName);
       let gameData = {
         "userId": userId,
         "userScore": userScore,
         "cpuScore": 0,
-        "playerTurn": true
+        "playerTurn": true,
+        "userName": userName
       };
       this.gameSaver.saveGame(token, gameData)
       .map((res) => res.json())
       .subscribe(res=>{
         this.navCtrl.push(Gamelobby, {showHome: true});
-        
+      }, err=>{
+        console.log("won't save" + err);
       });
       }
   }
