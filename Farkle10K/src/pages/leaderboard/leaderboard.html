@@ -26,10 +26,8 @@
           <ion-col>Score</ion-col>
         </ion-row>
       <ion-row *ngFor="let score of userHighScore; let index = index">
-        <div *ngIf="index <= 5">
-        <ion-col start>{{score.userName}}</ion-col>
-        <ion-col end>{{score.userScore}}</ion-col>
-        </div>
+        <ion-col width-50>{{score.userName}}</ion-col>
+        <ion-col>{{score.userScore}}</ion-col>
       </ion-row>  
       </ion-grid>
     </ion-list>
@@ -37,6 +35,6 @@
 </ion-card>
 <ion-card>
   <ion-card-header>Your Personal Best</ion-card-header>
-  <!--<ion-card-content>{{userHighScore.userScore}}</ion-card-content>-->
+  <ion-card-content>{{personalBest}}</ion-card-content>
 </ion-card>
 </ion-content>

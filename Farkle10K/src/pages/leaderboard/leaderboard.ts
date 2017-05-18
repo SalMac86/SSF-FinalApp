@@ -20,6 +20,7 @@ export class Leaderboard {
   userId: any;
   gameUsers: any;
   gameUserNames: any;
+  personalBest: any;
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -45,12 +46,13 @@ export class Leaderboard {
           this.gameUsers = this.appUsers.getUserNames().
             map(res=>res.json()).
             subscribe(result=>{
-            this.gameUserNames = result;
-            console.log("inside the gameUsers subscribe");
-            console.log(this.gameUserNames);
-            // console.log(this.userHighScore);
-            this.matchUserNames();
-            this.personalBest();
+              this.gameUserNames = result;
+              console.log("inside the gameUsers subscribe");
+              console.log(this.gameUserNames);
+              // console.log(this.userHighScore);
+              this.matchUserNames();
+              this.personalBestCalc();
+              this.getTopFive();
           });
       });
     // console.log(this.userHighScore);
@@ -80,9 +82,23 @@ export class Leaderboard {
     console.log(this.userHighScore);
   }
   
-  personalBest(){
+  personalBestCalc(){
     console.log("inside Personal Best");
     console.log(this.userHighScore);
+    this.personalBest = 0;
+    this.userHighScore.forEach(
+      (score)=>{
+       if(score.userId === this.userId && score.userScore > this.personalBest){
+         this.personalBest = score.userScore;
+       } 
+      });
+      
+  }
+  
+  getTopFive(){
+    console.log("start top five", this.userHighScore);
+    this.userHighScore = this.userHighScore.sort((a,b)=>{return b.userScore - a.userScore});
+    this.userHighScore = this.userHighScore.slice(0,5);
   }
   
 }
